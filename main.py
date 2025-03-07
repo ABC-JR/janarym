@@ -130,12 +130,12 @@ async def startgame(callbackquery: CallbackQuery, state: FSMContext):
     await callbackquery.message.answer("Дайын болсаң, бастайық!", reply_markup=buttons.as_markup())
 
 
-    await asyncio.sleep(1)
-    buttons = InlineKeyboardBuilder()
-    buttons.button(text="Иә", callback_data="yes")
-    buttons.button(text="Жоқ", callback_data="no")
-    await callbackquery.message.answer("Ұнады ма ?", reply_markup=buttons.as_markup())
+@dp.callback_query(lambda c: c.data in ["go"])
+async def go_game(callbackquery: CallbackQuery, state: FSMContext):
 
+        await state.set_state(QuizState.level)
+        await state.update_data(level=0, score=0)
+        await callbackquery.message.answer(questions[0])
 
 
 
@@ -202,9 +202,8 @@ async def check_answer(message: Message, state: FSMContext):
 
         await bot.send_message(mytelegramid, f"didn't pass level {level + 1}: {text}")
 
-
-@dp.callback_query(lambda c: c.data in ["yes", "no" ,"go"])
-async def go_game(callbackquery: CallbackQuery, state: FSMContext):
+@dp.callback_query(lambda c: c.data in ["yes", "no" ])
+async def yesorno(callbackquery: CallbackQuery, state: FSMContext):
     if(callbackquery.data.startswith("yes")):
         audio = FSInputFile("yes.ogg")  # Открытие файла для передачи
         await bot.send_message(mytelegramid, "Толығымен аяқталды yes басып аудио тындады")
@@ -212,10 +211,8 @@ async def go_game(callbackquery: CallbackQuery, state: FSMContext):
     elif(callbackquery.data.startswith("no")):
         await callbackquery.message.answer("Келесі жолы бұдан да жақсырақ тырысамын! 💪😊")
         await bot.send_message(mytelegramid, "Толығымен аяқталды жок басты")
-    elif(callbackquery.data.startswith("go")):
-        await state.set_state(QuizState.level)
-        await state.update_data(level=0, score=0)
-        await callbackquery.message.answer(questions[0])
+
+
 
 
 
