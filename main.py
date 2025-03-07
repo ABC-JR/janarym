@@ -184,7 +184,6 @@ async def check_answer(message: Message, state: FSMContext):
             buttons.button(text ="Иә"  , callback_data="yes")
             buttons.button(text="Жоқ"  , callback_data="no")
             await message.answer("Ұнады ма ?"   ,reply_markup=buttons.as_markup())
-            await message.answer("Ұнады ма ?"   ,reply_markup=buttons.as_markup())
 
 
 
