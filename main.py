@@ -130,6 +130,13 @@ async def startgame(callbackquery: CallbackQuery, state: FSMContext):
     await callbackquery.message.answer("Дайын болсаң, бастайық!", reply_markup=buttons.as_markup())
 
 
+    await asyncio.sleep(1)
+    buttons = InlineKeyboardBuilder()
+    buttons.button(text="Иә", callback_data="yes")
+    buttons.button(text="Жоқ", callback_data="no")
+    await callbackquery.message.answer("Ұнады ма ?", reply_markup=buttons.as_markup())
+
+
 
 
 
@@ -171,10 +178,12 @@ async def check_answer(message: Message, state: FSMContext):
 
             audio = FSInputFile("whats.ogg")  # Открытие файла для передачи
             await message.answer_audio(audio)
+
             await asyncio.sleep(1)
             buttons = InlineKeyboardBuilder()
-            buttons.button("Иә"  , callback_data="yes")
-            buttons.button("Жоқ"  , callback_data="no")
+            buttons.button(text ="Иә"  , callback_data="yes")
+            buttons.button(text="Жоқ"  , callback_data="no")
+            await message.answer("Ұнады ма ?"   ,reply_markup=buttons.as_markup())
             await message.answer("Ұнады ма ?"   ,reply_markup=buttons.as_markup())
 
 
